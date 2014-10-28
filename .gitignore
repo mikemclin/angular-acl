@@ -4,9 +4,9 @@
 # Project-specific ignores
 node_modules
 bower_components
-coverage
+coverage/*
+!coverage/.gitkeep
 test-results.xml
-
 
 ### PhpStorm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
