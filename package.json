@@ -1,0 +1,45 @@
+{
+  "name": "angular-acl",
+  "version": "0.1.0",
+  "description": "Role-based permissions for AngularJS",
+  "main": "angular-acl.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "grunt test",
+    "postinstall": "./node_modules/bower/bin/bower install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mikemclin/angular-acl.git"
+  },
+  "keywords": [
+    "angular",
+    "responsive"
+  ],
+  "author": "Mike McLin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mikemclin/angular-acl/issues"
+  },
+  "devDependencies": {
+    "bower": "~1.3.9",
+    "grunt": "~0.4.5",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-uglify": "~0.5.1",
+    "grunt-contrib-watch": "~0.6.1",
+    "grunt-karma": "~0.8.3",
+    "grunt-karma-coveralls": "~2.5.1",
+    "grunt-notify": "~0.3.0",
+    "jshint-stylish": "~0.2.0",
+    "karma": "~0.12.16",
+    "karma-chrome-launcher": "~0.1.4",
+    "karma-coverage": "~0.2.6",
+    "karma-jasmine": "~0.2.0",
+    "karma-junit-reporter": "~0.2.2",
+    "karma-phantomjs-launcher": "~0.1.4",
+    "load-grunt-tasks": "~0.6.0",
+    "time-grunt": "~0.4.0"
+  }
+}

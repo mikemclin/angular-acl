@@ -1,5 +1,8 @@
 # Angular ACL
 
+[![Build Status](https://img.shields.io/travis/mikemclin/angular-acl/master.svg?style=flat-square)](https://travis-ci.org/mikemclin/angular-acl)
+[![Coverage Status](https://img.shields.io/coveralls/mikemclin/angular-acl/master.svg?style=flat-square)](https://coveralls.io/r/mikemclin/angular-acl?branch=master)
+
 ## Install
 
 Install with `bower`:
