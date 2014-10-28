@@ -1,6 +1,6 @@
 "use strict";
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
@@ -13,14 +13,14 @@ module.exports = function(grunt) {
 
     // Project settings
     paths: {
-      src: './angular-acl.js',
+      src: 'src',
       dist: '.',
       vendor: 'bower_components',
       test: 'test'
     },
     pkg: grunt.file.readJSON('package.json'),
     banner: '/**\n' +
-    ' * <%= pkg.title %> v<%= pkg.version %>\n' +
+    ' * <%= pkg.name %> v<%= pkg.version %>\n' +
     ' * Copyright <%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
     ' */\n',
 
@@ -40,11 +40,22 @@ module.exports = function(grunt) {
       }
     },
 
+    'strip_code': {
+      options: {
+        'start_comment': 'start-test-block',
+        'end_comment': 'end-test-block'
+      },
+      stripTestCode: {
+        src: '<%= paths.src %>/<%= pkg.name %>.js',
+        dest: '<%= paths.dist %>/<%= pkg.name %>.js'
+      }
+    },
+
     // Minify JavaScript
     uglify: {
       dist: {
-        src: '<%= paths.src %>',
-        dest: '<%= paths.dist %>/angular-acl.min.js'
+        src: '<%= paths.dist %>/<%= pkg.name %>.js',
+        dest: '<%= paths.dist %>/<%= pkg.name %>.min.js'
       }
     },
 
@@ -56,7 +67,7 @@ module.exports = function(grunt) {
       },
       all: [
         'Gruntfile.js',
-        '<%= paths.src %>'
+        '<%= paths.src %>/*.js'
       ]
     },
 
@@ -93,6 +104,7 @@ module.exports = function(grunt) {
   grunt.registerTask('default', [
     'jshint',
     'karma:unit',
+    'strip_code',
     'uglify',
     'notify:default'
   ]);

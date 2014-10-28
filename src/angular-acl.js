@@ -48,6 +48,15 @@ angular.module('mm.acl').factory('AclService', [
 
     var AclService = {};
 
+    /* start-test-block */
+
+    // Add debug annotations for unit testing private functions/variables,
+    // which will be stripped during the production build
+    AclService._data = data;
+    AclService._roleHasAbilities = roleHasAbilities;
+    AclService._getRoleAbilities = getRoleAbilities;
+
+    /* end-test-block */
 
     /**
      * Attach a role to the current user
