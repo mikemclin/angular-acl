@@ -215,6 +215,71 @@ Remove role from current user
 | ----- | ---- | ------- | ------- |
 | `role` | string | `"admin"` | The role label |
 
+#### `AclService.flushRoles()`
+
+Remove all roles from current user
+
+#### `AclService.hasRole(role)`
+
+Check if the current user has role attached
+
+###### Returns
+
+**boolean**
+
+#### `AclService.setAbilities(abilities)`
+
+Set the abilities object (overwriting previous abilities).
+
+###### Parameters
+
+| Param | Type | Details |
+| ----- | ---- | ------- |
+| `ability` | object | Each property on the abilities object should be a role. Each role should have a value of an array. The array should contain a list of all of the roles abilities. |
+
+###### Example
+
+```js
+var abilities = {
+  guest: ['login'],
+  user: ['logout', 'view_content'],
+  admin: ['logout', 'view_content', 'manage_content']
+}
+AclService.setAbilities(abilities);
+```
+
+#### `AclService.addAbility(role, ability)`
+
+Add an ability to a role
+
+###### Parameters
+
+| Param | Type | Example | Details |
+| ----- | ---- | ------- | ------- |
+| `role` | string | `"admin"` | The role label |
+| `ability` | string | `"create_users"` | The ability/permission label |
+
+#### `AclService.can(ability)`
+
+Does current user have permission to do the given ability?
+
+###### Returns
+
+**boolean**
+
+###### Example
+
+```js
+// The current user is a moderator
+AclService.addRole('moderator');
+
+// Setup some abilities (only one in this quick example)
+AclService.addAbility('ban_users');
+
+AclService.can('ban_users') // returns true
+AclService.can('create_users') // returns false
+```
+
 ---
 
 ## License
