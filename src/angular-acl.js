@@ -3,8 +3,7 @@
 angular.module('mm.acl', []);
 
 angular.module('mm.acl').provider('AclService', [
-  '$window',
-  function ($window) {
+  function () {
 
     /**
      * Polyfill for IE8
@@ -73,14 +72,14 @@ angular.module('mm.acl').provider('AclService', [
      * Persist data to web storage
      */
     var saveToStorage = function (storagetype) {
-      $window[storagetype].setItem(config.storageKey, JSON.stringify(data));
+      window[storagetype].setItem(config.storageKey, JSON.stringify(data));
     };
 
     /**
      * Retrieve data from web storage
      */
     var fetchFromStorage = function (storagetype) {
-      var data = $window[storagetype].getItem(config.storageKey);
+      var data = window[storagetype].getItem(config.storageKey);
       return (data) ? JSON.parse(data) : false;
     };
 
