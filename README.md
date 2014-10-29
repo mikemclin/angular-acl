@@ -51,9 +51,56 @@ app.run(['AclService', function (AclService) {
 }]);
 ```
 
+### Protect a route
+
+If the current user tries to go to the `/manage` route, they will be redirected because the current user is a `member`, and `manage_content` is not one of a member role's abilities.
+
+However, when the user goes to `/content`, route will work as normal, since the user has permission.  If the user was not a `member`, but a `guest`, then they would not be able to see the `content` route either, based on the data we set above.
+
+```js
+app.config(['$routeProvider', function ($routeProvider) {
+  $routeProvider
+    .when('/manage', {
+      resolve : {
+        'acl' : function(AclService){
+          if(AclService.can('manage_content'){
+            // Has proper permissions
+            return true;
+          } else {
+            // Does not have permission
+            return $q.reject('Unauthorized');
+          }
+        }
+      }
+    });
+    .when('/content', {
+      resolve : {
+        'acl' : function(AclService){
+          if(AclService.can('view_content'){
+            // Has proper permissions
+            return true;
+          } else {
+            // Does not have permission
+            return $q.reject('Unauthorized');
+          }
+        }
+      }
+    });
+}]);
+
+app.run(['$rootScope', '$location', function ($rootScope, $location) {
+  // If the route change failed due to our "Unauthorized" error, redirect them
+  $rootScope.$on('$routeChangeError', function(current, previous, rejection){
+    if(rejection === 'Unauthorized'){
+      $location.path('/');
+    }
+  })
+}]);
+```
+
 ### Manipulate a Template
 
-The edit link in the template below will not show, because the current user is a `member`, and `manage_content` is not one of a member's abilities.
+The edit link in the template below will not show, because the current user is a `member`, and `manage_content` is not one of a member role's abilities.
 
 ###### Controller
 
@@ -98,6 +145,27 @@ angular.module('myApp', ['mm.acl']);
 
 ## Documentation
 
+### Config
+
+You can modify the configuration by extending the config object during the Angular configuration phase using the `config()` method on the `AclServiceProvider`.
+
+```js
+app.config(['AclServiceProvider', function (AclServiceProvider) {
+  var myConfig = {
+    storage: 'localStorage',
+    storageKey: 'AppAcl'
+  };
+  AclServiceProvider.config(myConfig);
+}]);
+```
+
+#### Config Options
+
+| Property | Default | Description |
+| -------- | ------- | ----------- |
+| `storage` | `"sessionStorage"` | `"sessionStorage"`, `"localStorage"`, `false`. Where you want to persist your ACL data. If you would prefer not to use web storage, then you can pass a value of `false`, and data will be reset on next page refresh _(next time the Angular app has to bootstrap)_ |
+| `storageKey` | `"AclService"` | The key that will be used when storing data in web storage |
+
 ### Public Methods
 
 #### `AclService.resume()`
@@ -112,7 +180,6 @@ Restore data from web storage.
 
 ```js
 app.run(['AclService', function (AclService) {
-  
   // Attempt to load from web storage
   if (!AclService.resume()) {
     // Web storage record did not exist, we'll have to build it from scratch
@@ -125,7 +192,6 @@ app.run(['AclService', function (AclService) {
     var aclData = fetchAclFromSomewhere();
     AclService.setAbilities(aclData);
   }
-  
 }]);
 ```
 
@@ -149,9 +215,7 @@ Remove role from current user
 | ----- | ---- | ------- | ------- |
 | `role` | string | `"admin"` | The role label |
 
-## Contributing
-
-Coming soon...
+---
 
 ## License
 
