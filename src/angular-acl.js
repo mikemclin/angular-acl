@@ -2,8 +2,9 @@
 
 angular.module('mm.acl', []);
 
-angular.module('mm.acl').factory('AclService', [
-  function () {
+angular.module('mm.acl').provider('AclService', [
+  '$window',
+  function ($window) {
 
     /**
      * Polyfill for IE8
@@ -20,6 +21,11 @@ angular.module('mm.acl').factory('AclService', [
         return -1;
       };
     }
+
+    var config = {
+      storage: 'sessionStorage',
+      storageKey: 'AclService'
+    };
 
     var data = {
       roles: [],
@@ -46,17 +52,81 @@ angular.module('mm.acl').factory('AclService', [
       return (roleHasAbilities(role)) ? data.abilities[role] : [];
     };
 
+    /**
+     * Persist data to storage based on config
+     */
+    var save = function () {
+      switch (config.storage) {
+        case 'sessionStorage':
+          saveToStorage('sessionStorage');
+          break;
+        case 'localStorage':
+          saveToStorage('localStorage');
+          break;
+        default:
+          // Don't save
+          return;
+      }
+    };
+
+    /**
+     * Persist data to web storage
+     */
+    var saveToStorage = function (storagetype) {
+      $window[storagetype].setItem(config.storageKey, JSON.stringify(data));
+    };
+
+    /**
+     * Retrieve data from web storage
+     */
+    var fetchFromStorage = function (storagetype) {
+      var data = $window[storagetype].getItem(config.storageKey);
+      return (data) ? JSON.parse(data) : false;
+    };
+
     var AclService = {};
 
     /* start-test-block */
 
     // Add debug annotations for unit testing private functions/variables,
     // which will be stripped during the production build
+    AclService._config = config;
     AclService._data = data;
     AclService._roleHasAbilities = roleHasAbilities;
     AclService._getRoleAbilities = getRoleAbilities;
+    AclService._save = save;
+    AclService._saveToStorage = saveToStorage;
+    AclService._fetchFromStorage = fetchFromStorage;
 
     /* end-test-block */
+
+    /**
+     * Restore data from web storage.
+     *
+     * Returns true if web storage exists and false if it doesn't.
+     *
+     * @returns {boolean}
+     */
+    AclService.resume = function () {
+      var storedData;
+
+      switch (config.storage) {
+        case 'sessionStorage':
+          storedData = fetchFromStorage('sessionStorage');
+          break;
+        case 'localStorage':
+          storedData = fetchFromStorage('localStorage');
+          break;
+        default:
+          storedData = null;
+      }
+      if (storedData) {
+        angular.extend(data, storedData);
+        return true;
+      }
+
+      return false;
+    };
 
     /**
      * Attach a role to the current user
@@ -66,6 +136,7 @@ angular.module('mm.acl').factory('AclService', [
     AclService.attachRole = function (role) {
       if (data.roles.indexOf(role) === -1) {
         data.roles.push(role);
+        save();
       }
     };
 
@@ -78,6 +149,7 @@ angular.module('mm.acl').factory('AclService', [
       var i = data.roles.indexOf(role);
       if (i > -1) {
         data.roles.splice(i, 1);
+        save();
       }
     };
 
@@ -86,6 +158,7 @@ angular.module('mm.acl').factory('AclService', [
      */
     AclService.flushRoles = function () {
       data.roles = [];
+      save();
     };
 
     /**
@@ -117,6 +190,7 @@ angular.module('mm.acl').factory('AclService', [
      */
     AclService.setAbilities = function (abilities) {
       data.abilities = abilities;
+      save();
     };
 
     /**
@@ -130,6 +204,7 @@ angular.module('mm.acl').factory('AclService', [
         data.abilities[role] = [];
       }
       data.abilities[role].push(ability);
+      save();
     };
 
     /**
@@ -154,7 +229,14 @@ angular.module('mm.acl').factory('AclService', [
       return false;
     };
 
-    return AclService;
+    return {
+      config: function (userConfig) {
+        angular.extend(config, userConfig);
+      },
+      $get: function () {
+        return AclService;
+      }
+    };
 
   }
 ]);
