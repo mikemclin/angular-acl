@@ -53,9 +53,9 @@ app.run(['AclService', function (AclService) {
 
 ### Manipulate a Template
 
-###### Controller
-
 The edit link in the template below will not show, because the current user is a `member`, and `manage_content` is not one of a member's abilities.
+
+###### Controller
 
 ```js
 app.controller('DemoCtrl', ['$scope', 'AclService', function ($scope, AclService) {
