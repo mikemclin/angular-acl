@@ -25,7 +25,17 @@ angular.module('myApp', ['mm.acl']);
 
 ## Documentation
 
-Coming soon...
+### `AclService` Methods
+
+#### `attachRole(role)`
+
+Attach a role to the current user
+
+###### Parameters
+
+| Param | Type | Example | Details |
+| ----- | ---- | ------- | ------- |
+| `role` | string | `'admin'` | The role label |
 
 ## Contributing
 
