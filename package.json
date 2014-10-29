@@ -1,6 +1,6 @@
 {
   "name": "angular-acl",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Role-based permissions for AngularJS",
   "main": "angular-acl.js",
   "directories": {
