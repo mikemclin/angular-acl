@@ -235,7 +235,7 @@ Set the abilities object (overwriting previous abilities).
 
 | Param | Type | Details |
 | ----- | ---- | ------- |
-| `ability` | object | Each property on the abilities object should be a role. Each role should have a value of an array. The array should contain a list of all of the roles abilities. |
+| `ability` | object | Each property on the abilities object should be a role. Each role should have a value of an array. The array should contain a list of all of the role's abilities. |
 
 ###### Example
 
@@ -274,7 +274,7 @@ Does current user have permission to do the given ability?
 AclService.addRole('moderator');
 
 // Setup some abilities (only one in this quick example)
-AclService.addAbility('ban_users');
+AclService.addAbility('moderator', 'ban_users');
 
 AclService.can('ban_users') // returns true
 AclService.can('create_users') // returns false
