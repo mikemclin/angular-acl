@@ -25,9 +25,38 @@ angular.module('myApp', ['mm.acl']);
 
 ## Documentation
 
-### `AclService` Methods
+### Public Methods
 
-#### `attachRole(role)`
+#### `AclService.resume()`
+
+Restore data from web storage.
+
+###### Returns
+
+**boolean** - true if web storage existed, false if it didn't
+
+###### Example Usage
+
+```js
+app.run(['AclService', function (AclService) {
+  
+  // Attempt to load from web storage
+  if (!AclService.resume()) {
+    // Web storage record did not exist, we'll have to build it from scratch
+    
+    // Get the user role, and add it to AclService
+    var userRole = fetchUserRoleFromSomewhere();
+    AclService.addRole(userRole);
+    
+    // Get ACL data, and add it to AclService
+    var aclData = fetchAclFromSomewhere();
+    AclService.setAbilities(aclData);
+  }
+  
+}]);
+```
+
+#### `AclService.attachRole(role)`
 
 Attach a role to the current user
 
@@ -35,7 +64,17 @@ Attach a role to the current user
 
 | Param | Type | Example | Details |
 | ----- | ---- | ------- | ------- |
-| `role` | string | `'admin'` | The role label |
+| `role` | string | `"admin"` | The role label |
+
+#### `AclService.detachRole(role)`
+
+Remove role from current user
+
+###### Parameters
+
+| Param | Type | Example | Details |
+| ----- | ---- | ------- | ------- |
+| `role` | string | `"admin"` | The role label |
 
 ## Contributing
 
