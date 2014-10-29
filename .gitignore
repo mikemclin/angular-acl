@@ -4,8 +4,7 @@
 # Project-specific ignores
 node_modules
 bower_components
-coverage/*
-!coverage/.gitkeep
+coverage
 test-results.xml
 
 ### PhpStorm ###
