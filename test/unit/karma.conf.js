@@ -7,7 +7,7 @@ module.exports = function (config) {
     files: [
       'bower_components/angular/angular.js',
       'bower_components/angular-mocks/angular-mocks.js',
-      'angular-acl.js',
+      'src/angular-acl.js',
       'test/unit/*_test.js'
     ],
 
@@ -28,7 +28,7 @@ module.exports = function (config) {
     ],
 
     preprocessors: {
-      'angular-responsive-elements.js': 'coverage'
+      'src/angular-acl.js': 'coverage'
     },
 
     coverageReporter: {
