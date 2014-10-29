@@ -37,9 +37,68 @@ describe('AclService', function () {
   describe('attachRole()', function () {
 
     it('should add role to current session', function () {
-      expect(AclService._data.roles.indexOf('foo')).toEqual(-1);
+      expect(AclService._data.roles).toEqual([]);
       AclService.attachRole('foo');
-      expect(AclService._data.roles.indexOf('foo')).toEqual(0);
+      expect(AclService._data.roles).toEqual(['foo']);
+    });
+
+    it('should add role only once', function () {
+      expect(AclService._data.roles).toEqual([]);
+      AclService.attachRole('foo');
+      AclService.attachRole('foo');
+      AclService.attachRole('foo');
+      expect(AclService._data.roles).toEqual(['foo']);
+    });
+
+  });
+
+  describe('detachRole()', function () {
+
+    it('should remove role to current session', function () {
+      AclService._data.roles = ['foo'];
+      AclService.detachRole('foo');
+      expect(AclService._data.roles).toEqual([]);
+    });
+
+    it('should not throw an error if role does not exist', function () {
+      expect(AclService._data.roles).toEqual([]);
+      AclService.detachRole('foo');
+      expect(AclService._data.roles).toEqual([]);
+    });
+
+  });
+
+  describe('flushRole()', function () {
+
+    it('should reset roles to an empty array', function () {
+      AclService._data.roles = ['foo', 'bar', 'baz'];
+      expect(AclService._data.roles).toEqual(['foo', 'bar', 'baz']);
+      AclService.flushRoles();
+      expect(AclService._data.roles).toEqual([]);
+    });
+
+  });
+
+  describe('hasRole()', function () {
+
+    it('should return true if role is in current session', function () {
+      AclService._data.roles = ['foo'];
+      expect(AclService.hasRole('foo')).toBeTruthy();
+    });
+
+    it('should return false if role is not in current session', function () {
+      AclService._data.roles = [];
+      expect(AclService.hasRole('foo')).toBeFalsy();
+    });
+
+  });
+
+  describe('setAbilities()', function () {
+
+    it('should set given param to abilities', function () {
+      expect(AclService._data.abilities).not.toEqual('foo');
+      AclService.setAbilities('foo');
+      expect(AclService._data.abilities).toEqual('foo');
     });
 
   });
