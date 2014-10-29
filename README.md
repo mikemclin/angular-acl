@@ -270,14 +270,16 @@ Does current user have permission to do the given ability?
 ###### Example
 
 ```js
-// The current user is a moderator
+// Setup some abilities
+AclService.addAbility('moderator', 'ban_users');
+AclService.addAbility('admin', 'create_users');
+
+// Add moderator role to the current user
 AclService.addRole('moderator');
 
-// Setup some abilities (only one in this quick example)
-AclService.addAbility('moderator', 'ban_users');
-
-AclService.can('ban_users') // returns true
-AclService.can('create_users') // returns false
+// Check if the current user has these permissions
+AclService.can('ban_users'); // returns true
+AclService.can('create_users'); // returns false
 ```
 
 ---
