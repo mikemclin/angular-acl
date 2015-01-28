@@ -2,7 +2,7 @@
 
 angular.module('mm.acl', []);
 
-angular.module('mm.acl').factory('AclService', [
+angular.module('mm.acl').provider('AclService', [
   function () {
 
     /**
@@ -12,14 +12,20 @@ angular.module('mm.acl').factory('AclService', [
      */
     if (!Array.prototype.indexOf) {
       Array.prototype.indexOf = function (needle) {
-        for (var i = 0; i < this.length; i++) {
-          if (this[i] === needle) {
-            return i;
+        var l = this.length;
+        for (; l--;) {
+          if (this[l] === needle) {
+            return l;
           }
         }
         return -1;
       };
     }
+
+    var config = {
+      storage: 'sessionStorage',
+      storageKey: 'AclService'
+    };
 
     var data = {
       roles: [],
@@ -46,8 +52,68 @@ angular.module('mm.acl').factory('AclService', [
       return (roleHasAbilities(role)) ? data.abilities[role] : [];
     };
 
+    /**
+     * Persist data to storage based on config
+     */
+    var save = function () {
+      switch (config.storage) {
+        case 'sessionStorage':
+          saveToStorage('sessionStorage');
+          break;
+        case 'localStorage':
+          saveToStorage('localStorage');
+          break;
+        default:
+          // Don't save
+          return;
+      }
+    };
+
+    /**
+     * Persist data to web storage
+     */
+    var saveToStorage = function (storagetype) {
+      window[storagetype].setItem(config.storageKey, JSON.stringify(data));
+    };
+
+    /**
+     * Retrieve data from web storage
+     */
+    var fetchFromStorage = function (storagetype) {
+      var data = window[storagetype].getItem(config.storageKey);
+      return (data) ? JSON.parse(data) : false;
+    };
+
     var AclService = {};
 
+
+    /**
+     * Restore data from web storage.
+     *
+     * Returns true if web storage exists and false if it doesn't.
+     *
+     * @returns {boolean}
+     */
+    AclService.resume = function () {
+      var storedData;
+
+      switch (config.storage) {
+        case 'sessionStorage':
+          storedData = fetchFromStorage('sessionStorage');
+          break;
+        case 'localStorage':
+          storedData = fetchFromStorage('localStorage');
+          break;
+        default:
+          storedData = null;
+      }
+      if (storedData) {
+        angular.extend(data, storedData);
+        return true;
+      }
+
+      return false;
+    };
 
     /**
      * Attach a role to the current user
@@ -57,6 +123,7 @@ angular.module('mm.acl').factory('AclService', [
     AclService.attachRole = function (role) {
       if (data.roles.indexOf(role) === -1) {
         data.roles.push(role);
+        save();
       }
     };
 
@@ -69,6 +136,7 @@ angular.module('mm.acl').factory('AclService', [
       var i = data.roles.indexOf(role);
       if (i > -1) {
         data.roles.splice(i, 1);
+        save();
       }
     };
 
@@ -77,6 +145,7 @@ angular.module('mm.acl').factory('AclService', [
      */
     AclService.flushRoles = function () {
       data.roles = [];
+      save();
     };
 
     /**
@@ -108,6 +177,7 @@ angular.module('mm.acl').factory('AclService', [
      */
     AclService.setAbilities = function (abilities) {
       data.abilities = abilities;
+      save();
     };
 
     /**
@@ -121,6 +191,7 @@ angular.module('mm.acl').factory('AclService', [
         data.abilities[role] = [];
       }
       data.abilities[role].push(ability);
+      save();
     };
 
     /**
@@ -132,9 +203,10 @@ angular.module('mm.acl').factory('AclService', [
     AclService.can = function (ability) {
       var role, abilities;
       // Loop through roles
-      for (var i = 0, len = data.roles.length; i < len; i++) {
+        var l = data.roles.length;
+      for (; l--;) {
         // Grab the the current role
-        role = data.roles[i];
+        role = data.roles[l];
         abilities = getRoleAbilities(role);
         if (abilities.indexOf(ability) > -1) {
           // Ability is in role abilities
@@ -145,7 +217,14 @@ angular.module('mm.acl').factory('AclService', [
       return false;
     };
 
-    return AclService;
+    return {
+      config: function (userConfig) {
+        angular.extend(config, userConfig);
+      },
+      $get: function () {
+        return AclService;
+      }
+    };
 
   }
 ]);

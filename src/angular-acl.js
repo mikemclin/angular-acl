@@ -12,9 +12,10 @@ angular.module('mm.acl').provider('AclService', [
      */
     if (!Array.prototype.indexOf) {
       Array.prototype.indexOf = function (needle) {
-        for (var i = 0; i < this.length; i++) {
-          if (this[i] === needle) {
-            return i;
+        var l = this.length;
+        for (; l--;) {
+          if (this[l] === needle) {
+            return l;
           }
         }
         return -1;
@@ -215,9 +216,10 @@ angular.module('mm.acl').provider('AclService', [
     AclService.can = function (ability) {
       var role, abilities;
       // Loop through roles
-      for (var i = 0, len = data.roles.length; i < len; i++) {
+        var l = data.roles.length;
+      for (; l--;) {
         // Grab the the current role
-        role = data.roles[i];
+        role = data.roles[l];
         abilities = getRoleAbilities(role);
         if (abilities.indexOf(ability) > -1) {
           // Ability is in role abilities
