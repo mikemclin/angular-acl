@@ -197,7 +197,7 @@ app.run(['AclService', function (AclService) {
 
 #### `AclService.attachRole(role)`
 
-Attach a role to the current user
+Attach a role to the current user. A user can have multiple roles.
 
 ###### Parameters
 
@@ -207,7 +207,7 @@ Attach a role to the current user
 
 #### `AclService.detachRole(role)`
 
-Remove role from current user
+Remove a role from the current user
 
 ###### Parameters
 
@@ -235,7 +235,7 @@ Set the abilities object (overwriting previous abilities).
 
 | Param | Type | Details |
 | ----- | ---- | ------- |
-| `ability` | object | Each property on the abilities object should be a role. Each role should have a value of an array. The array should contain a list of all of the role's abilities. |
+| `abilities` | object | Each property on the abilities object should be a role. Each role should have a value of an array. The array should contain a list of all of the role's abilities. |
 
 ###### Example
 
