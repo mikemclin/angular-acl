@@ -63,7 +63,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     .when('/manage', {
       resolve : {
         'acl' : function(AclService){
-          if(AclService.can('manage_content'){
+          if(AclService.can('manage_content')){
             // Has proper permissions
             return true;
           } else {
@@ -76,7 +76,7 @@ app.config(['$routeProvider', function ($routeProvider) {
     .when('/content', {
       resolve : {
         'acl' : function(AclService){
-          if(AclService.can('view_content'){
+          if(AclService.can('view_content')){
             // Has proper permissions
             return true;
           } else {
