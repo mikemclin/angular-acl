@@ -62,7 +62,7 @@ app.config(['$routeProvider', function ($routeProvider) {
   $routeProvider
     .when('/manage', {
       resolve : {
-        'acl' : function(AclService){
+        'acl' : ['$q', 'AclService', function($q, AclService){
           if(AclService.can('manage_content')){
             // Has proper permissions
             return true;
@@ -70,12 +70,12 @@ app.config(['$routeProvider', function ($routeProvider) {
             // Does not have permission
             return $q.reject('Unauthorized');
           }
-        }
+        }]
       }
     });
     .when('/content', {
       resolve : {
-        'acl' : function(AclService){
+        'acl' : ['$q', 'AclService', function($q, AclService){
           if(AclService.can('view_content')){
             // Has proper permissions
             return true;
@@ -83,7 +83,7 @@ app.config(['$routeProvider', function ($routeProvider) {
             // Does not have permission
             return $q.reject('Unauthorized');
           }
-        }
+        }]
       }
     });
 }]);
