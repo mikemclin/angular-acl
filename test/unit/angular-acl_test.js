@@ -93,6 +93,15 @@ describe('AclService', function () {
 
   });
 
+  describe('getRoles()', function () {
+
+    it('should return all the roles in current session', function () {
+      AclService._data.roles = ['foo', 'bar'];
+      expect(AclService.getRoles()).toEqual(['foo', 'bar']);
+    });
+
+  });
+
   describe('setAbilities()', function () {
 
     it('should set given param to abilities', function () {
