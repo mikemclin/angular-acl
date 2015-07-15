@@ -219,9 +219,23 @@ Remove a role from the current user
 
 Remove all roles from current user
 
+#### `AclService.getRoles()`
+
+Get all of the roles attached to the user
+
+###### Returns
+
+**array**
+
 #### `AclService.hasRole(role)`
 
 Check if the current user has role attached
+
+###### Parameters
+
+| Param | Type | Example | Details |
+| ----- | ---- | ------- | ------- |
+| `role` | string | `"admin"` | The role label |
 
 ###### Returns
 
