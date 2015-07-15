@@ -159,6 +159,14 @@ angular.module('mm.acl').provider('AclService', [
     };
 
     /**
+     * Returns the current user roles
+     * @returns {Array}
+     */
+    AclService.getRoles = function () {
+      return data.roles;
+    };
+
+    /**
      * Set the abilities object (overwriting previous abilities)
      *
      * Each property on the abilities object should be a role.
