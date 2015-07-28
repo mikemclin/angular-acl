@@ -85,6 +85,7 @@ angular.module('mm.acl').provider('AclService', [
     };
 
     var AclService = {};
+    AclService.resume = resume;
 
 
     /**
@@ -94,7 +95,7 @@ angular.module('mm.acl').provider('AclService', [
      *
      * @returns {boolean}
      */
-    AclService.resume = function () {
+    function resume() {
       var storedData;
 
       switch (config.storage) {
@@ -113,7 +114,7 @@ angular.module('mm.acl').provider('AclService', [
       }
 
       return false;
-    };
+    }
 
     /**
      * Attach a role to the current user
@@ -229,6 +230,7 @@ angular.module('mm.acl').provider('AclService', [
       config: function (userConfig) {
         angular.extend(config, userConfig);
       },
+      resume: resume,
       $get: function () {
         return AclService;
       }
