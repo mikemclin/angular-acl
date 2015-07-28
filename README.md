@@ -195,6 +195,14 @@ app.run(['AclService', function (AclService) {
 }]);
 ```
 
+You can also run `resume()` in the `config` phase, if you need the app to load the ACL data from web storage earlier in the app bootstrap process (e.g. before `$routeProvider` resolves the first route).
+
+```js
+app.config(['AclServiceProvider', function (AclServiceProvider) {
+  AclServiceProvider.resume();
+}]);
+```
+
 #### `AclService.attachRole(role)`
 
 Attach a role to the current user. A user can have multiple roles.
