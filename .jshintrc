@@ -5,7 +5,7 @@
   "forin": true,
   "immed": true,
   "indent": 2,
-  "latedef": true,
+  "latedef": false,
   "maxlen": 120,
   "newcap": true,
   "noarg": true,
