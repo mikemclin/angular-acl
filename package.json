@@ -7,8 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "grunt test",
-    "postinstall": "./node_modules/bower/bin/bower install"
+    "test": "grunt test"
   },
   "repository": {
     "type": "git",
