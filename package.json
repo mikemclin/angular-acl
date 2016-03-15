@@ -30,7 +30,7 @@
     "grunt-contrib-watch": "~0.6.1",
     "grunt-karma": "~0.8.3",
     "grunt-karma-coveralls": "~2.5.1",
-    "grunt-notify": "~0.3.0",
+    "grunt-notify": "^0.3.1",
     "grunt-strip-code": "~0.1.2",
     "jshint-stylish": "~0.2.0",
     "karma": "~0.12.16",
