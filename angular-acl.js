@@ -226,6 +226,34 @@ angular.module('mm.acl').provider('AclService', [
       return false;
     };
 
+    /**
+     * Does current user have any of the required permission to do something?
+     *
+     * @param abilities [array]
+     * @returns {boolean}
+     */
+    AclService.canAny = function (abilities) {
+      var role, roleAbilities;
+      // Loop through roles
+      var l = data.roles.length;
+      var j = abilities.length;
+
+      for (; l--;) {
+        // Grab the the current role
+        role = data.roles[l];
+        roleAbilities = getRoleAbilities(role);
+
+        for (; j--;){
+          if (roleAbilities.indexOf(abilities[j]) > -1) {
+            // Ability is in role abilities
+            return true;
+          }
+        }
+      }
+      // We made it here, so the ability wasn't found in attached roles
+      return false;
+    };
+
     return {
       config: function (userConfig) {
         angular.extend(config, userConfig);
