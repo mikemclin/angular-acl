@@ -90,7 +90,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 
 app.run(['$rootScope', '$location', function ($rootScope, $location) {
   // If the route change failed due to our "Unauthorized" error, redirect them
-  $rootScope.$on('$routeChangeError', function(current, previous, rejection){
+  $rootScope.$on('$routeChangeError', function(event, current, previous, rejection){
     if(rejection === 'Unauthorized'){
       $location.path('/');
     }
