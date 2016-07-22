@@ -172,6 +172,23 @@ angular.module('mm.acl').provider('AclService', [
       return (data.roles.indexOf(role) > -1);
     };
 
+
+    /**
+     * Check if the current user has any roles attached
+     * 
+     * @param roles
+     * @returns {boolean}
+     */
+    AclService.hasAnyRoles = function (roles) {
+      var haveHole = false;
+      angular.forEach(roles, function (role) {
+        if(data.roles.indexOf(role) > -1){
+          haveHole = true;
+        }
+      });
+      return haveHole;
+    };
+    
     /**
      * Returns the current user roles
      * @returns {Array}
