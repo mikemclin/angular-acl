@@ -169,7 +169,13 @@ angular.module('mm.acl').provider('AclService', [
      * @returns {boolean}
      */
     AclService.hasRole = function (role) {
-      return (data.roles.indexOf(role) > -1);
+      var roles = angular.isArray(role) ? role : [role];
+      for(var l = roles.length; l--;) {
+        if(data.roles.indexOf(roles[l]) > -1){
+          return true;
+        }
+      }
+      return false;
     };
 
     /**

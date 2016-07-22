@@ -85,7 +85,7 @@ describe('AclService', function () {
       AclService._data.roles = ['foo'];
       expect(AclService.hasRole('foo')).toBeTruthy();
     });
-
+    
     it('should return false if role is not in current session', function () {
       AclService._data.roles = [];
       expect(AclService.hasRole('foo')).toBeFalsy();
