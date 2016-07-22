@@ -92,6 +92,20 @@ describe('AclService', function () {
     });
 
   });
+  
+  describe('hasAnyRoles()', function () {
+
+    it('should return true if role is in current session', function () {
+        AclService._data.roles = ['foo'];
+        expect(AclService.hasAnyRoles(['foo','bee'])).toBeTruthy();
+    });
+
+    it('should return false if role is not in current session', function () {
+        AclService._data.roles = [];
+        expect(AclService.hasAnyRoles(['foo','bee'])).toBeFalsy();
+    });
+
+  });
 
   describe('getRoles()', function () {
 
