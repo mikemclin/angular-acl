@@ -243,7 +243,7 @@ Check if the current user has role(s) attached. If an array is given, all roles 
 
 | Param | Type | Example | Details |
 | ----- | ---- | ------- | ------- |
-| `role` | string|array | `"admin"` | The role label, or an array of role labels |
+| `role` | string/array | `"admin"` | The role label, or an array of role labels |
 
 ###### Returns
 
