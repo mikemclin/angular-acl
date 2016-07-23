@@ -237,13 +237,27 @@ Get all of the roles attached to the user
 
 #### `AclService.hasRole(role)`
 
-Check if the current user has role attached
+Check if the current user has role(s) attached. If an array is given, all roles must be attached. To check if any roles in an array are attached see the `hasAnyRole()` method.
 
 ###### Parameters
 
 | Param | Type | Example | Details |
 | ----- | ---- | ------- | ------- |
-| `role` | string | `"admin"` | The role label |
+| `role` | string|array | `"admin"` | The role label, or an array of role labels |
+
+###### Returns
+
+**boolean**
+
+#### `AclService.hasAnyRole(roles)`
+
+Check if the current user has any of the given roles attached. To check if all roles in an array are attached see the `hasRole()` method.
+
+###### Parameters
+
+| Param | Type | Example | Details |
+| ----- | ---- | ------- | ------- |
+| `roles` | array | `["admin","user"]` | Array of role labels |
 
 ###### Returns
 
