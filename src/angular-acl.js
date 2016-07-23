@@ -163,15 +163,30 @@ angular.module('mm.acl').provider('AclService', [
     };
 
     /**
-     * Check if the current user has role attached
+     * Check if the current user has role(s) attached
      *
      * @param role
      * @returns {boolean}
      */
     AclService.hasRole = function (role) {
       var roles = angular.isArray(role) ? role : [role];
-      for(var l = roles.length; l--;) {
-        if(data.roles.indexOf(roles[l]) > -1){
+      for (var l = roles.length; l--;) {
+        if (data.roles.indexOf(roles[l]) === -1) {
+          return false;
+        }
+      }
+      return !!roles.length;
+    };
+
+    /**
+     * Check if the current user any of the given roles
+     *
+     * @param roles
+     * @returns {boolean}
+     */
+    AclService.hasAnyRole = function (roles) {
+      for (var l = roles.length; l--;) {
+        if (AclService.hasRole(roles[l])) {
           return true;
         }
       }
