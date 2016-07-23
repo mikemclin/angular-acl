@@ -231,7 +231,7 @@ angular.module('mm.acl').provider('AclService', [
     AclService.can = function (ability) {
       var role, abilities;
       // Loop through roles
-        var l = data.roles.length;
+      var l = data.roles.length;
       for (; l--;) {
         // Grab the the current role
         role = data.roles[l];
@@ -262,7 +262,7 @@ angular.module('mm.acl').provider('AclService', [
         role = data.roles[l];
         roleAbilities = getRoleAbilities(role);
 
-        for (; j--;){
+        for (; j--;) {
           if (roleAbilities.indexOf(abilities[j]) > -1) {
             // Ability is in role abilities
             return true;
