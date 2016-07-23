@@ -150,13 +150,34 @@ angular.module('mm.acl').provider('AclService', [
     };
 
     /**
-     * Check if the current user has role attached
+     * Check if the current user has role(s) attached
      *
      * @param role
      * @returns {boolean}
      */
     AclService.hasRole = function (role) {
-      return (data.roles.indexOf(role) > -1);
+      var roles = angular.isArray(role) ? role : [role];
+      for (var l = roles.length; l--;) {
+        if (data.roles.indexOf(roles[l]) === -1) {
+          return false;
+        }
+      }
+      return !!roles.length;
+    };
+
+    /**
+     * Check if the current user any of the given roles
+     *
+     * @param roles
+     * @returns {boolean}
+     */
+    AclService.hasAnyRole = function (roles) {
+      for (var l = roles.length; l--;) {
+        if (AclService.hasRole(roles[l])) {
+          return true;
+        }
+      }
+      return false;
     };
 
     /**
@@ -212,7 +233,7 @@ angular.module('mm.acl').provider('AclService', [
     AclService.can = function (ability) {
       var role, abilities;
       // Loop through roles
-        var l = data.roles.length;
+      var l = data.roles.length;
       for (; l--;) {
         // Grab the the current role
         role = data.roles[l];
@@ -243,7 +264,7 @@ angular.module('mm.acl').provider('AclService', [
         role = data.roles[l];
         roleAbilities = getRoleAbilities(role);
 
-        for (; j--;){
+        for (; j--;) {
           if (roleAbilities.indexOf(abilities[j]) > -1) {
             // Ability is in role abilities
             return true;
