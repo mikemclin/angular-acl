@@ -85,10 +85,39 @@ describe('AclService', function () {
       AclService._data.roles = ['foo'];
       expect(AclService.hasRole('foo')).toBeTruthy();
     });
-    
+
+    it('should return true if all roles are in current session', function () {
+      AclService._data.roles = ['foo', 'bar'];
+      expect(AclService.hasRole(['foo', 'bar'])).toBeTruthy();
+    });
+
     it('should return false if role is not in current session', function () {
       AclService._data.roles = [];
       expect(AclService.hasRole('foo')).toBeFalsy();
+    });
+
+    it('should return false if all roles are not in current session', function () {
+      AclService._data.roles = ['foo', 'bar'];
+      expect(AclService.hasRole(['foo', 'bar', 'baz'])).toBeFalsy();
+    });
+
+  });
+
+  describe('hasAnyRole()', function () {
+
+    it('should return true if role is in current session', function () {
+      AclService._data.roles = ['foo'];
+      expect(AclService.hasAnyRole(['foo'])).toBeTruthy();
+    });
+
+    it('should return true if only some roles are in current session', function () {
+      AclService._data.roles = ['foo'];
+      expect(AclService.hasAnyRole(['foo', 'bar'])).toBeTruthy();
+    });
+
+    it('should return false if role is not in current session', function () {
+      AclService._data.roles = [];
+      expect(AclService.hasAnyRole(['foo'])).toBeFalsy();
     });
 
   });
