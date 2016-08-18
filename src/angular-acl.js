@@ -299,4 +299,16 @@ angular.module('mm.acl').provider('AclService', [
     };
 
   }
-]);
+]).directive('aclShow', function(AclService){
+  return {
+    restrict: 'A',
+    link: function(scope, element, attrs){
+      var permissions, can;
+      permissions = attrs.aclShow.split(',');
+      can = AclService.canAny(permissions);
+      if(!can){
+        element.css({"display":'none'});
+      }
+    }
+  };
+});
