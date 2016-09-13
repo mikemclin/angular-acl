@@ -20,7 +20,7 @@ A great analogy to ACL's in JavaScript would be form validation in JavaScript.  
 
 ##### Example Tampering Scenario
 
-The current user has a role of "guest".  A guest is not able to "create_users".  However, this sneaky guest is clever enough to tamper with the system and give themselves that privilege. So, now that guest is at the "Create Users" page, and submits the form. The form data is sent the the server and the user is greeted with an "Access Denied: Unauthorized" message, because the server also checked to make sure that the user had the correct permissions.
+The current user has a role of "guest".  A guest is not able to "create_users".  However, this sneaky guest is clever enough to tamper with the system and give themselves that privilege. So, now that guest is at the "Create Users" page, and submits the form. The form data is sent to the server and the user is greeted with an "Access Denied: Unauthorized" message, because the server also checked to make sure that the user had the correct permissions.
 
 Any sensitive data or actions should integrate a server check like this example.
 
