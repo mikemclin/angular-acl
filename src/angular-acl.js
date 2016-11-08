@@ -163,6 +163,15 @@ angular.module('mm.acl').provider('AclService', [
     };
 
     /**
+     * Remove all abilities from current user
+     * @param role
+     */
+    AclService.flushAbilities = function(role) {
+      data.abilities[role] = [];
+      save();
+    };
+
+    /**
      * Check if the current user has role(s) attached
      *
      * @param role
