@@ -68,12 +68,33 @@ angular.module('mm.acl').provider('AclService', [
           return;
       }
     };
+    
+    var unset = function () {
+      switch (config.storage) {
+        case 'sessionStorage':
+          unsetFromStorage('sessionStorage');
+          break;
+        case 'localStorage':
+          unsetFromStorage('localStorage');
+          break;
+        default:
+          // Don't save
+          return;
+      }
+    };
 
     /**
      * Persist data to web storage
      */
     var saveToStorage = function (storagetype) {
       window[storagetype].setItem(config.storageKey, JSON.stringify(data));
+    };
+    
+    /**
+     * Unset data from web storage
+     */
+    var unsetFromStorage = function (storagetype) {
+      window[storagetype].removeItem(config.storageKey);
     };
 
     /**
@@ -128,6 +149,15 @@ angular.module('mm.acl').provider('AclService', [
 
       return false;
     }
+    
+    /**
+     * Remove data from web storage
+     *
+     * @param role
+     */
+    AclService.drop = function () {
+      unset();
+    };
 
     /**
      * Attach a role to the current user
