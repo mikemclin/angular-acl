@@ -68,7 +68,7 @@ angular.module('mm.acl').provider('AclService', [
           return;
       }
     };
-    
+
     var unset = function () {
       switch (config.storage) {
         case 'sessionStorage':
@@ -89,7 +89,7 @@ angular.module('mm.acl').provider('AclService', [
     var saveToStorage = function (storagetype) {
       window[storagetype].setItem(config.storageKey, JSON.stringify(data));
     };
-    
+
     /**
      * Unset data from web storage
      */
@@ -149,7 +149,7 @@ angular.module('mm.acl').provider('AclService', [
 
       return false;
     }
-    
+
     /**
      * Remove data from web storage
      */
@@ -327,10 +327,10 @@ angular.module('mm.acl').provider('AclService', [
     };
 
   }
-]).directive('aclShow', function(AclService){
+]).directive('aclShow', function (AclService) {
   return {
     restrict: 'A',
-    link: function(scope, element, attrs){
+    link: function (scope, element, attrs) {
       var permissions, can;
       permissions = attrs.aclShow.split(',');
       can = AclService.canAny(permissions);
