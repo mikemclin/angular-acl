@@ -203,6 +203,10 @@ app.config(['AclServiceProvider', function (AclServiceProvider) {
 }]);
 ```
 
+#### `AclService.flushStorage()`
+
+Remove all data from web storage.
+
 #### `AclService.attachRole(role)`
 
 Attach a role to the current user. A user can have multiple roles.
@@ -316,6 +320,26 @@ AclService.attachRole('moderator');
 // Check if the current user has these permissions
 AclService.can('ban_users'); // returns true
 AclService.can('create_users'); // returns false
+```
+
+### Directives
+
+#### `aclShow`
+
+Show and element if truthy, otherwise hide it. 
+
+###### Example Usage
+
+Only user's that have the `edit_posts` permission would see the button.
+
+```html
+<button acl-show="edit_posts">Edit Post</button>
+```
+
+This is essentially a shortcut instead of having to type out an `ngShow` like this...
+
+```html
+<button ng-show="$ctrl.AclService.can('edit_posts')">Edit Post</button>
 ```
 
 ---
