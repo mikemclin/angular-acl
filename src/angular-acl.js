@@ -5,6 +5,8 @@ angular.module('mm.acl', []);
 angular.module('mm.acl').provider('AclService', [
   function () {
 
+    var NG_HIDE_CLASS = 'ng-hide';
+
     /**
      * Polyfill for IE8
      *
@@ -331,12 +333,16 @@ angular.module('mm.acl').provider('AclService', [
   return {
     restrict: 'A',
     link: function (scope, element, attrs) {
-      var permissions, can;
-      permissions = attrs.aclShow.split(',');
-      can = AclService.canAny(permissions);
-      if(!can){
-        element.css({"display":'none'});
-      }
+      scope.$watch(attrs.aclShow, function aclShowWatchAction(value) {
+        var permissions, can;
+        permissions = value.split(',');
+        can = AclService.canAny(permissions);
+        if (!can) {
+          element.addClass(NG_HIDE_CLASS)
+        } else {
+          element.removeClass(NG_HIDE_CLASS)
+        }
+      });
     }
   };
 });
