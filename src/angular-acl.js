@@ -152,10 +152,8 @@ angular.module('mm.acl').provider('AclService', [
     
     /**
      * Remove data from web storage
-     *
-     * @param role
      */
-    AclService.drop = function () {
+    AclService.flushStorage = function () {
       unset();
     };
 
