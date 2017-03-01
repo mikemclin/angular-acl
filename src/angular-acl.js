@@ -329,7 +329,7 @@ angular.module('mm.acl').provider('AclService', [
     };
 
   }
-]).directive('aclShow', function (AclService) {
+]).directive('aclShow', function (AclService, NG_HIDE_CLASS) {
   return {
     restrict: 'A',
     link: function (scope, element, attrs) {
