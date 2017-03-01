@@ -2,10 +2,10 @@
 
 angular.module('mm.acl', []);
 
+angular.module('mm.acl').constant('NG_HIDE_CLASS', 'ng-hide');
+
 angular.module('mm.acl').provider('AclService', [
   function () {
-
-    var NG_HIDE_CLASS = 'ng-hide';
 
     /**
      * Polyfill for IE8
@@ -329,7 +329,7 @@ angular.module('mm.acl').provider('AclService', [
     };
 
   }
-]).directive('aclShow', function (AclService) {
+]).directive('aclShow', function (AclService, NG_HIDE_CLASS) {
   return {
     restrict: 'A',
     link: function (scope, element, attrs) {
@@ -338,9 +338,9 @@ angular.module('mm.acl').provider('AclService', [
         permissions = value.split(',');
         can = AclService.canAny(permissions);
         if (!can) {
-          element.addClass(NG_HIDE_CLASS)
+          element.addClass(NG_HIDE_CLASS);
         } else {
-          element.removeClass(NG_HIDE_CLASS)
+          element.removeClass(NG_HIDE_CLASS);
         }
       });
     }
