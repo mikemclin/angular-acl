@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('mm.acl', []);
+var NG_HIDE_CLASS = 'ng-hide';
 
-angular.module('mm.acl').constant('NG_HIDE_CLASS', 'ng-hide');
+angular.module('mm.acl', []);
 
 angular.module('mm.acl').provider('AclService', [
   function () {
@@ -329,7 +329,7 @@ angular.module('mm.acl').provider('AclService', [
     };
 
   }
-]).directive('aclShow', function (AclService, NG_HIDE_CLASS) {
+]).directive('aclShow', function (AclService) {
   return {
     restrict: 'A',
     link: function (scope, element, attrs) {
