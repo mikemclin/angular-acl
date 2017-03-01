@@ -1,5 +1,7 @@
 'use strict';
 
+var NG_HIDE_CLASS = 'ng-hide';
+
 angular.module('mm.acl', []);
 
 angular.module('mm.acl').provider('AclService', [
@@ -69,11 +71,32 @@ angular.module('mm.acl').provider('AclService', [
       }
     };
 
+    var unset = function () {
+      switch (config.storage) {
+        case 'sessionStorage':
+          unsetFromStorage('sessionStorage');
+          break;
+        case 'localStorage':
+          unsetFromStorage('localStorage');
+          break;
+        default:
+          // Don't save
+          return;
+      }
+    };
+
     /**
      * Persist data to web storage
      */
     var saveToStorage = function (storagetype) {
       window[storagetype].setItem(config.storageKey, JSON.stringify(data));
+    };
+
+    /**
+     * Unset data from web storage
+     */
+    var unsetFromStorage = function (storagetype) {
+      window[storagetype].removeItem(config.storageKey);
     };
 
     /**
@@ -115,6 +138,13 @@ angular.module('mm.acl').provider('AclService', [
 
       return false;
     }
+
+    /**
+     * Remove data from web storage
+     */
+    AclService.flushStorage = function () {
+      unset();
+    };
 
     /**
      * Attach a role to the current user
@@ -286,4 +316,20 @@ angular.module('mm.acl').provider('AclService', [
     };
 
   }
-]);
+]).directive('aclShow', function (AclService) {
+  return {
+    restrict: 'A',
+    link: function (scope, element, attrs) {
+      scope.$watch(attrs.aclShow, function aclShowWatchAction(value) {
+        var permissions, can;
+        permissions = value.split(',');
+        can = AclService.canAny(permissions);
+        if (!can) {
+          element.addClass(NG_HIDE_CLASS);
+        } else {
+          element.removeClass(NG_HIDE_CLASS);
+        }
+      });
+    }
+  };
+});
