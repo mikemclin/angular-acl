@@ -335,6 +335,10 @@ angular.module('mm.acl').provider('AclService', [
     link: function (scope, element, attrs) {
       scope.$watch(attrs.aclShow, function aclShowWatchAction(value) {
         var permissions, can;
+        if (!value) {
+          element.addClass(NG_HIDE_CLASS);
+          return;
+        }
         permissions = value.split(',');
         can = AclService.canAny(permissions);
         if (!can) {
