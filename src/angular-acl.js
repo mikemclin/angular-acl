@@ -2,6 +2,13 @@
 
 var NG_HIDE_CLASS = 'ng-hide';
 
+const STORAGE_TYPES = {
+  sessionStorage: 'sessionStorage',
+  localStorage: 'localStorage'
+};
+
+const getStorageType = (value) => (STORAGE_TYPES[value]);
+
 angular.module('mm.acl', []);
 
 angular.module('mm.acl').provider('AclService', [
@@ -58,49 +65,36 @@ angular.module('mm.acl').provider('AclService', [
      * Persist data to storage based on config
      */
     var save = function () {
-      // { case1: value1 }[case1] # => value1
-      let storageType = {
-        sessionStorage: 'sessionStorage',
-        localStorage  : 'localStorage'
-      }[config.storage];
+      let storageType = getStorageType(config.storage);
       
-      storageType && saveToStorage(storageType);
-      }
+      return storageType && saveToStorage(storageType);
     };
 
     var unset = function () {
-      switch (config.storage) {
-        case 'sessionStorage':
-          unsetFromStorage('sessionStorage');
-          break;
-        case 'localStorage':
-          unsetFromStorage('localStorage');
-          break;
-        default:
-          // Don't save
-          return;
-      }
+      let storageType = getStorageType(config.storage);
+  
+      return storageType && unsetFromStorage(storageType);
     };
 
     /**
      * Persist data to web storage
      */
-    var saveToStorage = function (storagetype) {
-      window[storagetype].setItem(config.storageKey, JSON.stringify(data));
+    var saveToStorage = function (storageType) {
+      window[storageType].setItem(config.storageKey, JSON.stringify(data));
     };
 
     /**
      * Unset data from web storage
      */
-    var unsetFromStorage = function (storagetype) {
-      window[storagetype].removeItem(config.storageKey);
+    var unsetFromStorage = function (storageType) {
+      window[storageType].removeItem(config.storageKey);
     };
 
     /**
      * Retrieve data from web storage
      */
-    var fetchFromStorage = function (storagetype) {
-      var data = window[storagetype].getItem(config.storageKey);
+    var fetchFromStorage = function (storageType) {
+      var data = window[storageType].getItem(config.storageKey);
       return (data) ? JSON.parse(data) : false;
     };
 
@@ -129,12 +123,9 @@ angular.module('mm.acl').provider('AclService', [
      * @returns {boolean}
      */
     function resume() {
-      let storeType = {
-        sessionStorage: 'sessionStorage',
-        localStorage: 'localStorage'
-      }[config.storage];
+      let storageType = getStorageType(config.storage);
       
-      if (storeType){
+      if (storageType){
         let storedData = fetchFromStorage(storeType);
         
         return storedData ? angular.extend(data, storedData) && true : false;
