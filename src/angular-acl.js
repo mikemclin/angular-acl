@@ -58,16 +58,13 @@ angular.module('mm.acl').provider('AclService', [
      * Persist data to storage based on config
      */
     var save = function () {
-      switch (config.storage) {
-        case 'sessionStorage':
-          saveToStorage('sessionStorage');
-          break;
-        case 'localStorage':
-          saveToStorage('localStorage');
-          break;
-        default:
-          // Don't save
-          return;
+      // { case1: value1 }[case1] # => value1
+      let storageType = {
+        sessionStorage: 'sessionStorage',
+        localStorage  : 'localStorage'
+      }[config.storage];
+      
+      storageType && saveToStorage(storageType);
       }
     };
 
@@ -132,21 +129,15 @@ angular.module('mm.acl').provider('AclService', [
      * @returns {boolean}
      */
     function resume() {
-      var storedData;
-
-      switch (config.storage) {
-        case 'sessionStorage':
-          storedData = fetchFromStorage('sessionStorage');
-          break;
-        case 'localStorage':
-          storedData = fetchFromStorage('localStorage');
-          break;
-        default:
-          storedData = null;
-      }
-      if (storedData) {
-        angular.extend(data, storedData);
-        return true;
+      let storeType = {
+        sessionStorage: 'sessionStorage',
+        localStorage: 'localStorage'
+      }[config.storage];
+      
+      if (storeType){
+        let storedData = fetchFromStorage(storeType);
+        
+        return storedData ? angular.extend(data, storedData) && true : false;
       }
 
       return false;
